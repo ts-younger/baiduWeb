@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>瀑布流布局</title>
+<style>
+	*{
+		margin:0;
+		padding: 0
+	}
+	html{
+		
+	}
+	#main{
+		position: relative;
+		background-color: #5b5b5b;
+		/*overflow: hidden;*/
+		width: 1000px;
+		margin: 0 auto;
+	}
+	.box{
+		padding: 15px 0 0 15px;
+		/*width: 200px;*/
+		/*overflow: hidden;*/
+		/*height: auto;*/
+		float: left;
+	}
+	.pic{
+		padding: 10px;
+		/*width: 200px;*/
+		/*overflow: hidden;*/
+		/*height: auto;*/
+		border: 0px solid #ccc;
+		border-radius:5px;
+		box-shadow:0 0 5px #ccc;
+	}
+	.pic img{
+		width: 180px;
+		height: auto;
+	}
+</style>
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
+</head>
+<body>
+	<div id="main">
+		 <div class="box">
+				<div class="pic">
+					<img src="./img/1co.jpg" alt="">
+				</div>
+			</div>
+		<div class="box">
+				<div class="pic">
+					<img src="./img/2co.jpg" alt="">
+				</div>
+			</div>
+		<div class="box">
+				<div class="pic">
+					<img src="./img/3co.jpg" alt="">
+				</div>
+			</div>
+			<div class="box">
+				<div class="pic">
+					<img src="./img/4co.jpg" alt="">
+				</div>
+			</div>
+			<div class="box">
+				<div class="pic">
+					<img src="./img/5co.jpg" alt="">
+				</div>
+			</div>
+			<div class="box">
+				<div class="pic">
+					<img src="./img/6co.jpg" alt="">
+				</div>
+			</div>
+			<div class="box">
+				<div class="pic">
+					<img src="./img/7co.jpg" alt="">
+				</div>
+			</div>
+			<div class="box">
+				<div class="pic">
+					<img src="./img/8co.jpg" alt="">
+				</div>
+			</div>
+	</div>
+<script>
+$(document).ready(function(){
+var dataInt={'data':[{'src':'./img/1co.jpg'},{'src':'./img/2co.jpg'},
+	{'src':'./img/3co.jpg'},{'src':'./img/4co.jpg'},
+	{'src':'./img/5co.jpg'},{'src':'./img/6co.jpg'},
+	{'src':'./img/7co.jpg'},{'src':'./img/8co.jpg'},
+	{'src':'./img/1co.jpg'},{'src':'./img/2co.jpg'},
+	{'src':'./img/3co.jpg'},{'src':'./img/4co.jpg'},
+	{'src':'./img/5co.jpg'},{'src':'./img/6co.jpg'},
+	{'src':'./img/7co.jpg'},{'src':'./img/8co.jpg'},
+	{'src':'./img/1co.jpg'},{'src':'./img/2co.jpg'},
+	{'src':'./img/3co.jpg'},{'src':'./img/4co.jpg'},
+	{'src':'./img/5co.jpg'},{'src':'./img/6co.jpg'},
+	{'src':'./img/7co.jpg'},{'src':'./img/8co.jpg'},
+	{'src':'./img/1co.jpg'},{'src':'./img/2co.jpg'},
+	{'src':'./img/3co.jpg'},{'src':'./img/4co.jpg'},
+	{'src':'./img/5co.jpg'},{'src':'./img/6co.jpg'},
+	{'src':'./img/7co.jpg'},{'src':'./img/8co.jpg'}
+	]}
+
+/*$('.box').each(function(index,value){
+	console.log($('.box').eq(index).outerHeight())
+})*/
+fall()
+render()
+
+$(document).on('scroll',function(){
+	var rheight=$(document).scrollTop()+$(window).innerHeight();
+	if(rheight>=$('.box').last().offset().top){
+		fall()
+		render()
+	}
+})
+
+
+function fall(){
+	for(let i=0;i<dataInt.data.length;i++){
+		var $box=$('<div>');
+		$box.addClass('box')
+		$pic=$('<div>');
+		$pic.addClass('pic');
+		$img=$('<img>');
+		$img[0].src=dataInt.data[i].src;
+		$img[0].title=i;
+		$pic.append($img);
+		$box.append($pic);		
+		$('#main').append($box);
+	}
+} 
+var data2=[10,3,5,2,9,4];
+// getIndex(data2)
+// alert(Math.min.apply(null,data2))
+function render(){
+	var heightData=[];
+	var oIndex=null;
+	$box=$('#main>.box');
+	var w=$box.eq(0).outerWidth();
+	$('#main').width(4*w+15).css('margin','0 auto');
+	$box.each(function(index,value){
+		// console.log($box.eq(index).height()+'/'+index)
+		var h=$box.eq(index).outerHeight()
+		if(index<4){
+			heightData[index]=h
+			// alert(heightData)
+		}else{
+			var minH=Math.min.apply(null,heightData);
+			var oleft=getIndex(minH,heightData);
+			// var newheg=minH+
+			$box.eq(index).css('position','absolute').offset({'left':$box.eq(oleft).offset().left,'top':minH})
+			
+			heightData.splice(oleft,1,minH+$box.eq(index).outerHeight())
+			console.log(heightData)
+			console.log(oleft)
+		}
+	})
+}
+
+function getIndex(num,data1){
+	for(let i=0 ;i<data1.length;i++){
+		if(data1[i]==num) return i;
+	}
+}
+
+})
+
+</script>
+</body>
+</html>
+	
