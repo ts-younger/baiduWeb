@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+<script type="text/javascript">
+var patt=/\d+/;
+var a='112';
+alert(a.match(patt))
+
+
+function bubbleSort(arr) {
+	console.time('改进后冒泡排序耗时');
+    var len = arr.length;
+    for (var i = 0; i < len; i++) {
+        for (var j = 0; j < len - 1 - i; j++) {
+            if (arr[j] > arr[j+1]) {        //相邻元素两两对比
+                var temp = arr[j+1];        //元素交换
+                arr[j+1] = arr[j];
+                arr[j] = temp;
+            }
+        }
+    }
+    console.timeEnd('改进前冒泡排序耗时');
+    return arr;
+}
+var arr=[48,3,44,38,5,47,15,36,26,27,2,46,4,19,50];
+console.log(bubbleSort(arr));
+
+//[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
+
+
+function bubbleSort2(arr){
+    console.time('改进后冒泡排序耗时');
+    var i=arr.length-1;
+    var ti=[];  //初始时,最后位置保持不变
+    while(i>0){
+        var pos=0;//每趟开始时,无记录交换
+        for(var j=0;j<i;j++)
+            if(arr[j]>arr[j+1]){
+                pos=j;//记录交换的位置
+                var tmp=arr[j];arr[j]=arr[j+1];arr[j+1]=tmp;
+            }
+        i=pos;
+        ti.push(pos);//为下一趟排序作准备
+    }
+    console.log(ti);
+    console.timeEnd('改进后冒泡排序耗时');
+    return arr;
+}
+var arr=[55,77,44,22,99,11,33];
+console.log(bubbleSort2(arr));//[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
+
+function bubbleSort3(arr3) {
+    var low = 0;
+    var high= arr.length-1; //设置变量的初始值
+    var tmp,j;
+    console.time('2.改进后冒泡排序耗时');
+    while (low < high) {
+        for (j= low; j< high; j++) //正向冒泡,找到最大者
+            if (arr[j]> arr[j+1]) {
+                tmp = arr[j]; arr[j]=arr[j+1];arr[j+1]=tmp;
+            }
+        high--;                 //修改high值, 前移一位
+        for (j=high; j>low; --j) //反向冒泡,找到最小者
+            if (arr[j]<arr[j-1]) {
+                tmp = arr[j]; arr[j]=arr[j-1];arr[j-1]=tmp;
+            }
+        low++;                  //修改low值,后移一位
+    }
+    console.timeEnd('2.改进后冒泡排序耗时');
+    return arr3;
+}
+var arr=[48,3,44,38,5,47,15,36,26,27,2,46,4,19,50];
+console.log(bubbleSort3(arr));//[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
+
+/*
+function Node(data,left,right) {
+    this.data = data;
+    this.left = left;
+    this.right = right;
+    this.show = show;
+}
+
+function show() {
+    return this.data;
+}
+
+function BST() {
+    this.root = null;
+    this.insert = insert;
+    this.inOrder = inOrder;
+}
+
+function insert(data) {
+    var n = new Node(data,null,null);
+    if(this.root == null) {
+        this.root = n;
+    }else {
+        var current = this.root;
+        var parent;
+        while(current) {
+             parent = current;
+            if(data <  current.data) {
+                current = current.left;
+                if(current == null) {
+                    parent.left = n;
+                    break;
+                }
+            }else {
+                current = current.right;
+                if(current == null) {
+                    parent.right = n;
+                    break;
+                }
+            }
+        }
+    }
+}
+// 中序遍历
+function inOrder(node) {
+    if(!(node == null)) {
+        inOrder(node.left);
+        console.log(node.show());
+        inOrder(node.right);
+    }
+}
+function postOrder(node) {
+    if(!(node == null)) {
+        postOrder(node.left);
+        postOrder(node.right);
+        console.log("后序遍历"+node.show());
+    }
+}
+function preOrder(node) {
+       if(!(node == null)) {
+           console.log("前序遍历"+node.show());
+           preOrder(node.left);
+           preOrder(node.right);
+        }
+}
+//代码初始化如下：
+var nums = new BST();
+nums.insert(23);
+nums.insert(45);
+nums.insert(16);
+nums.insert(37);
+nums.insert(3);
+nums.insert(99);
+nums.insert(22);
+preOrder(nums.root);
+inOrder(nums.root);
+postOrder(nums.root)
+
+*/
+// preOrder(nums.root)
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

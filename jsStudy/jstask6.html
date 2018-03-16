@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务六：基础JavaScript练习</title>
+</head>
+<style>
+	section{width: 800px;margin: 80px auto;text-align: center}
+	#sqi_num{width: 400px;height: 80px;resize:none;}
+	button{width: 80px;height: 40px;border-radius:10px;margin-left: 20px;}
+	#search{width: 200px;height: 40px;}
+	ul{width: 600px;margin: 40px auto}
+	li{margin:10px;height: 50px;background: rgb(100,100,100);list-style: none;line-height: 50px;color: #fff }
+</style>
+<body>
+	<section>
+		<textarea type="text" id='sqi_num' placeholder="请输入内容" ></textarea><br>
+		<button>左侧添加</button>
+		<button>右侧添加</button>
+		<button>左侧删除</button>
+		<button>右侧删除</button><br>
+		<input type="search" id='search' >
+		<button>查询</button>
+		<ul id="aqi_display">
+			<li>昨夜星辰昨夜风，画廊西侧桂堂东</li>
+			<li>君不见，黄河之水天上来</li>
+			<li>大漠孤烟直，长河落日圆</li>
+			<li>北斗七星高，哥舒夜带刀</li>
+			<li>举杯消愁愁更愁</li>
+		</ul>
+	</section>
+<script type="text/javascript">
+(function(){
+	var oUl=document.getElementById('aqi_display'),
+		aLi=document.getElementsByTagName('li'),
+		oIn=document.getElementById('search'),
+		oText=document.getElementById('sqi_num'),
+		aBt=document.getElementsByTagName('button');
+	
+	function jy(){
+		if(!/[\w\u4e00-\u9fa5]+/.test(oText.value)){
+			alert('数据类型错误');
+			oText.value='';
+			return false;
+		}//第一层简称输入内容是否合法
+
+		let patt1=/[\w\r\t\s\u4e00-\u9fa5]+/g;
+		let data=oText.value.match(patt1);
+		for(let i=0; i <data.length; i++){
+			for(let j=0;j<aLi.length;j++){
+				if(data[i]==aLi[j].innerText){
+					data.splice(i);
+					if(data.length==0) alert('请勿重复输入');
+				}
+			}
+		}
+		return data;//检验处理输入数据与数据库重复性
+	}
+	function insert(data,side){		
+		for(let i=0;i<data.length;i++){
+			let oLi=document.createElement('li');
+			oLi.innerHTML=data[i];
+			if(side=='left'){						
+				oUl.insertBefore(oLi,aLi[0]);
+			}else{
+				oUl.appendChild(oLi);
+			}	//根据变量side值判断插入方向
+		}		
+	}
+	
+
+	function search(){
+		if(/[\w\u4e00-\u9fa5]+/.test(oIn.value)){
+			//测试输入数据是否含有数字英文汉字
+			var patt=new RegExp(eval('/'+oIn.value+'/ig'));
+			var str1="<b style='background:red'>"+oIn.value+"</b>";
+			for(let j=0;j<aLi.length;j++){
+				aLi[j].innerHTML=aLi[j].innerText;
+			}
+			//在搜索匹配之前将以前的搜索后改变的页面还原
+			for(let i=0;i<aLi.length;i++){
+				if(patt.test(aLi[i].innerText)){
+					// alert(aLi[i].innerHTML);
+					var newstr=aLi[i].innerText.replace(patt,str1);
+					aLi[i].innerHTML=newstr;
+					oIn.value='';
+				}
+			}
+		}
+		
+	}
+
+	aBt[0].onclick=function(){
+		var side='left';
+		var data=jy();
+		insert(data,side);
+		oText.value='';
+	}
+	aBt[1].onclick=function(){
+		var side='right';
+		var data=jy();
+		insert(data,side);
+		oText.value='';
+	}
+	aBt[2].onclick=function(){
+		oUl.removeChild(aLi[0]);
+	}
+	aBt[3].onclick=function(){
+		oUl.removeChild(aLi[aLi.length-1]);
+	}
+	
+	aBt[4].onclick=function(){
+		search();
+	}
+})()
+</script>
+</body>
+</html>

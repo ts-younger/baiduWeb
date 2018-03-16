@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务四：基础JavaScript练习</title>
+</head>
+<style>
+	section{width: 800px;margin: 80px auto;}
+	#sqi_num{width: 200px;height: 40px;}
+	button{width: 80px;height: 40px;border-radius:10px;margin-left: 20px;}
+	ul{width: 600px;margin: 40px auto}
+	li{float: left;margin:10px;width: 50px;height: 50px;background: rgb(100,100,100);list-style: none;line-height: 50px;text-align: center;color: #fff }
+</style>
+<body>
+	<section>
+		<input type="text" id='sqi_num' placeholder="请输入数字">
+		<button>左侧添加</button>
+		<button>右侧添加</button>
+		<button>左侧删除</button>
+		<button>右侧删除</button>
+		<button>排序</button>
+		<ul id="aqi_display">
+			<li>33</li>
+			<li>44</li>
+			<li>55</li>
+			<li>66</li>
+			<li>11</li>
+		</ul>
+	</section>
+<script type="text/javascript">
+(function(){
+	var oIn=document.getElementById('sqi_num'),
+		aBt=document.querySelectorAll('button'),
+		aLi=document.getElementsByTagName('li'),
+		oUl=document.getElementById('aqi_display');
+
+		/*检测输入数据*/
+		function jc(){
+			if(oIn.value==''){
+				alert('请出入数字');
+				oIn.value='';
+				return false;
+			}else if(!/^\d+$/.test(oIn.value)){
+				alert('数据类型错误');
+				oIn.value='';
+				return false;
+			}
+			return true;
+		}
+		/*添加事件监听*/
+		function addEvent(obj,type,fn){
+			if(obj.addEventListener){
+				obj.addEventListener(type,fn,false);
+			}else{
+				obj.attachEvent('on'+type,fn);
+			}
+		}
+
+		function insert(xl){
+			var oLi=document.createElement('li');
+			oLi.innerHTML=oIn.value;
+			if(xl){
+				oUl.appendChild(oLi);
+			}else{
+				oUl.insertBefore(oLi,aLi[0])
+			}
+			oIn.value='';
+		}
+
+		function remove(del){
+			if(aLi.length==1){
+				var qr=confirm('是否要删除最后一个');
+				if(!qr)	return;
+				else oUl.removeChild(aLi[0]);
+			}else if(aLi.length==0){
+				alert('已经没有了');
+				return;
+			}else if(del){
+				oUl.removeChild(aLi[0]);
+			}else{
+				var anum=aLi.length-1;
+				oUl.removeChild(aLi[anum]);
+			}
+		}
+		/*添加事件*/
+		addEvent(aBt[0],'click',function(){
+			if(jc()){
+				var xl=false;
+				insert(xl);
+			}
+		})
+		addEvent(aBt[1],'click',function(){
+			if(jc()){
+				var xl=true;
+				insert(xl);
+			}
+		})
+		addEvent(aBt[2],'click',function(){
+			var del=true;
+			remove(del);
+		})
+		addEvent(aBt[3],'click',function(){
+			var del=false;
+			remove(del);
+		})
+
+})()
+</script>
+</body>
+</html>

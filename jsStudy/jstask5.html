@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务五：基础JavaScript练习</title>
+</head>
+<style>
+	section{width: 800px;margin: 80px auto;}
+	#sqi_num{width: 200px;height: 40px;}
+	button{width: 80px;height: 40px;border-radius:10px;margin-left: 20px;}
+	ul{width: 600px;margin: 40px auto;height: 300px;}
+	li{display: inline-block;margin-right:5px;width: 30px;list-style: none;text-align: center;color: #000;vertical-align: bottom;background: rgb(100,0,0);}
+</style>
+<body>
+	<section>
+		<input type="text" id='sqi_num' placeholder="请输入数字">
+		<button>左侧添加</button>
+		<button>右侧添加</button>
+		<button>左侧删除</button>
+		<button>右侧删除</button>
+		<button>排序</button>
+		<ul id="aqi_display">
+			<li>33</li>
+			<li>44</li>
+			<li>55</li>
+			<li>66</li>
+			<li>11</li>
+		</ul>
+	</section>
+<script type="text/javascript">
+(function(){
+	var oUl=document.getElementById('aqi_display'),
+		aLi=document.getElementsByTagName('li'),
+		oIn=document.getElementById('sqi_num'),
+		aBt=document.getElementsByTagName('button');
+	var young=true;
+	/*提取数据*/
+	function getData(){
+		var data=[];
+		for(var i=0;i<aLi.length;i++){
+			data.push(aLi[i].innerHTML);
+		}
+		return data
+	}
+	/*检验数据正确性*/
+	function jy(data){
+		if(data.length>=60){
+		alert('数据已满');
+		oIn.value='';
+		return false;
+		}
+		if(!/^\d+$/.test(oIn.value)){
+			alert('数据类型错误');
+			oIn.value='';
+			return false;
+		} 
+		if(oIn.value<10 || oIn.value>100){
+			alert('请输入10-100之间数字');
+			oIn.value='';
+			return false;
+		}
+		for(let i=0;i<data.length;i++){
+			if(oIn.value==data[i]){
+				alert('数据重复');
+				oIn.value='';
+				return false;
+			}
+		}
+		return true;
+	}
+	/*排序*/
+	function sortData(data,young){
+		if(young){
+			/*增加*/
+			return data.sort(function(a,b){
+			return a-b
+			})
+		}else{
+			return data.sort(function(a,b){
+			return b-a
+			})
+		}
+	}
+	function getStyle(obj,attr){
+		if(obj.currentStyle){
+			return obj.currentStyle[attr];
+		}else{
+			return getComputedStyle(obj,false)[attr];
+		}
+	}
+	function doCss(obj,attr,value){
+		if(arguments.length==2){
+			return getStyle(obj,attr);
+		}else if(arguments.length==3){
+			if(attr=='opacity'){
+				obj.style.opacity=value;
+			}else if(attr=='background'){
+				obj.style.background=value;
+			}else if(attr=='display'){
+				obj.display=value;			
+			}else{
+				obj.style[attr]=value+'px'
+			}
+		}
+	}
+	/*提取data渲染页面*/
+	function render(data){
+		oUl.innerHTML='';
+		for(let i=0;i<data.length;i++){
+		var oLi=document.createElement('li');
+		doCss(oLi,'margin-top',(100-data[i])*2);
+		doCss(oLi,'height',data[i]*2);
+		oUl.appendChild(oLi)
+		}
+	}
+	function cc(data){
+		if(oIn.value && /^\d+$/.test(oIn.value)){
+			for(let i=0;i<data.length;i++){
+				if(data[i]==oIn.value){
+					alert('数据重复');
+					return 0;
+				}/*判断是否发生数据重复问题*/
+			}
+		}else{
+			alert('请输入数字');
+			return 0;
+		}	
+	}
+
+	var data=getData();
+	render(data);
+	aBt[0].onclick=function(){
+		if(jy(data)){
+			data.unshift(oIn.value);
+			render(data);
+			oIn.value='';
+		}					
+	}
+
+	aBt[1].onclick=function(){
+		if(jy(data)){
+			data.push(oIn.value);
+			render(data);
+			oIn.value='';
+		}	
+	}
+	aBt[2].onclick=function(){
+		if(data.length<1){
+			alert('下面没有了');
+			return;  /*页面数据将被清空时提醒*/
+		}else if(data.length==1){
+			alert('还有一个了，你忍心吗')
+		}
+		data.shift();
+		render(data);
+	}
+	aBt[3].onclick=function(){
+		if(data.length<1){
+			alert('下面没有了');
+			return;
+		}else if(data.length==1){
+			alert('还有一个了，你忍心吗')
+		}
+		data.pop();
+		render(data);
+	}
+	
+	aBt[4].onclick=function(){
+		young=!young;
+		sortData(data,young);
+		render(data);
+	}
+})()
+</script>
+</body>
+</html>

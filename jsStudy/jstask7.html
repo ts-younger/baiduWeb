@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务七：JavaScript和树（一）</title>
+<style>
+	.box{
+		display: flex;
+		justify-content:space-around;
+		align-items:center;
+		width: 40%;
+		height: 70%;
+		border: 1px solid rgb(100,0,0)
+	}
+	.box_one{
+		width: 600px;
+		height: 400px;
+		margin: 0 auto;
+	}
+	.btn{
+		width: 600px;
+		margin: 20px auto;
+	}
+	button{
+		width: 100px;
+		height: 40px;
+	}
+
+</style>
+</head>
+<body>
+	<div class="box_one box">
+		<div class="box">
+			<div class="box">
+				<div class="box"></div>
+				<div class="box"></div>
+			</div>
+			<div class="box">
+				<div class="box"></div>
+				<div class="box"></div>
+			</div>
+		</div>
+		<div class="box">
+			<div class="box">
+				<div class="box"></div>
+				<div class="box"></div>
+			</div>
+			<div class="box">
+				<div class="box"></div>
+				<div class="box"></div>
+			</div>
+		</div>
+	</div>
+	<div class="btn">
+		<button>前序</button>
+		<button>中序</button>
+		<button>后序</button>
+	</div>
+<script type="text/javascript">
+(function(){
+	var timer;
+	function preOrder(node,arr){
+		if(node!==null){
+			// alert(node);
+			arr.push(node);
+			preOrder(node.firstElementChild,arr);
+			preOrder(node.lastElementChild,arr)
+		}
+		return arr
+	}
+
+	function lastOrder(node,arr){
+		if(node!==null){
+			lastOrder(node.firstElementChild,arr);
+			lastOrder(node.lastElementChild,arr);
+			arr.push(node);
+			
+		}
+		return arr
+	}
+
+	function postOrder(node,arr){
+		if(node!==null){
+			postOrder(node.firstElementChild,arr);
+			arr.push(node);
+			postOrder(node.lastElementChild,arr);
+		}
+		return arr;
+	}
+
+	function getstyle(obj,attr){
+		if(obj.currentStyle){
+			return obj.currentStyle[attr];
+		}else{
+			return getComputedStyle(obj,false)[attr];
+		}
+	}
+	function docss(obj,attr,value){
+		if(arguments.length==2){
+			getstyle(obj,attr);
+		}else{
+			if(attr=='background' || attr=='opacity'){
+				obj.style.backgroundColor=value;
+			}else{
+				obj.style[attr]=value+'px';
+			}
+		}
+	}
+	
+	/*function show(arr){
+		timer=setInterval(function(){
+			for(let i=0; i<=arr.length;i++){
+				if(i==0){
+					arr[0].style.backgroundColor='#000';
+					alert(-1)
+				}else if(i==arr.length){
+					arr[i-1].style.backgroundColor='#fff';
+					clearInterval(timer);
+					return;
+				}else{
+					arr[i-1].style.backgroundColor='#fff';
+					arr[i].style.backgroundColor='#ccc';
+					alert(arr[i].style.backgroundColor)
+				}
+			}
+		},5000)	
+	}*/
+
+	function show(arr,i){
+		clearInterval(timer);
+		timer=setInterval(function(){
+			if(i==0){
+				arr[0].style.backgroundColor='#ccc';
+			}else if(i==arr.length){
+				arr[i-1].style.backgroundColor='#fff';
+				clearInterval(timer);
+				return
+			}else{
+				arr[i-1].style.backgroundColor='#fff';
+				arr[i].style.backgroundColor='#ccc';
+			}
+			i++;
+		},1000)
+	}
+	function addEvent(obj,type,fn){
+		if(obj.addEventListener){
+			obj.addEventListener(type,fn,false)
+		}else{
+			obj.attachEvent('on'+type,fn);
+		}
+	}
+	function btnok(order){
+		var arr=[];
+		var i=0;
+		var oFDiv=document.querySelector('.box_one');
+		arr=order(oFDiv,arr);
+		show(arr,i)
+	}
+	var btn=document.querySelectorAll('button');
+	addEvent(btn[0],'click',function(){
+		btnok(preOrder)
+	})
+	addEvent(btn[1],'click',function(){
+		btnok(postOrder)
+	})
+	addEvent(btn[2],'click',function(){
+		btnok(lastOrder)
+	})
+	
+
+
+})()
+</script>
+</body>
+</html>

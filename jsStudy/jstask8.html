@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务八：JavaScript和树（二）</title>
+<style>
+*{
+	font-size: 14pt;
+}
+div{
+	border: 2px solid rgb(10,0,0);
+	margin-top: 15px;
+	background: #fff
+}
+.box_one{
+	width: 1200px;
+	margin: 0 auto;
+	border: none
+}
+.box_two{
+	width: 1200px;
+	margin-left: -7px;
+	display: inline-block;
+}
+.box_three{
+	width: 29%;
+	margin:10px 0;
+	display: inline-block;
+}
+.box_three div{
+	width: 24%;
+	margin:15px 0;
+	display: inline-block;
+	text-align: center;
+}
+input{
+	width: 200px;
+	height: 30px;
+}
+button{
+	width: 100px;
+	height: 30px;
+}
+</style>
+</head>
+<body>
+	<div class="box_one">
+		<div class='box_two'>nba
+			<div class='box_three'>勇士
+				<div>库里</div>
+				<div>格林</div>
+				<div>汤普森</div>
+			</div>
+			<div class='box_three'>火箭
+				<div>哈登</div>
+				<div>内内</div>
+				<div>戈登</div>
+			</div>
+			<div class='box_three'>马刺
+				<div>帕克</div>
+				<div>马努</div>
+				<div>卡哇伊</div>
+			</div>
+		</div>
+		<div class='box_two'>中国
+			<div class='box_three'>四川
+				<div>成都</div>
+				<div>绵阳</div>
+				<div>德阳</div>
+			</div>
+			<div class='box_three'>北京
+				<div>五道口</div>
+				<div>中南海</div>
+				<div>朝阳</div>
+			</div>
+			<div class='box_three'>上海
+				<div>崇明</div>
+				<div>徐家汇</div>
+				<div>杨浦</div>
+			</div>
+		</div>
+		<div class='box_two'>足球
+			<div class='box_three'>英超
+				<div>水晶宫</div>
+				<div>曼联</div>
+				<div>切尔西</div>
+			</div>
+			<div class='box_three'>德甲
+				<div>拜仁</div>
+				<div>霍村</div>
+				<div>狼堡</div>
+			</div>
+			<div class='box_three'>意甲
+				<div>国米</div>
+				<div>A米</div>
+				<div>尤文</div>
+			</div>
+		</div>
+		<div class='box_two'>景区
+			<div class='box_three'>西南
+				<div>九寨沟</div>
+				<div>峨眉山</div>
+				<div>新都桥</div>
+			</div>
+			<div class='box_three'>华北
+				<div>故宫</div>
+				<div>泰山</div>
+				<div>太行山</div>
+			</div>
+			<div class='box_three'>西北
+				<div>华山</div>
+				<div>敦煌</div>
+				<div>秦皇陵</div>
+			</div>
+		</div>
+	</div>
+	<br>
+	<input id='search' type="text">
+	<button>前序搜索</button>
+	<button>后序搜索</button>
+<script type="text/javascript">
+(function(){
+	var aDiv=document.querySelector('.box_three');
+	// alert(aDiv.children.length);
+	var data=[],str;
+	var timer;
+	function recss(){
+		for(let i=0;i<data.length;i++){
+			data[i].style.background='#fff'
+		}
+	}
+	function getData(root){
+		if(root.nodeName.toLowerCase()=='div'){
+			// alert(root.childNodes[0].nodeValue);
+			data.push(root);	
+		}
+		for(let i=0;i<root.children.length;i++){
+			if(root.children[i]!=null){
+				getData(root.children[i]);
+			}
+		}
+		return data
+	}
+	function getData2(root){
+		for(let i=0;i<root.children.length;i++){
+			if(root.children[i]!=null){
+				getData2(root.children[i])
+			}
+		}
+		if(root.nodeName.toLowerCase()=='div'){
+			data.push(root);
+		}
+		// return data
+	}
+	var root=document.querySelector('.box_one');
+
+	function search1(data,str){
+		var i=0;
+		clearInterval(timer);
+		recss(data);
+		timer=setInterval(function(){
+			if(i==0){
+				data[0].style.background='rgb(200,0,0)';
+			}else if(i==data.length){
+				data[data.length-1].style.background='#fff';
+				clearInterval(timer);
+				return
+			}else if(data[i].childNodes[0].nodeValue==str){
+				data[i-1].style.background='#fff';
+				data[i].style.background='rgb(200,0,0)';
+				clearInterval(timer);
+
+			}else{
+				data[i-1].style.background='#fff';
+				data[i].style.background='rgb(200,0,0)';
+			}
+		i++;
+		},200)
+	}
+
+	var oIn=document.querySelector('input');
+	var aBt=document.querySelectorAll('button');
+
+	function jy(){
+		if(oIn.value && /[\w\u4e00-\u9fa5]+/.test(oIn.value)){
+			if(/\s/.test(oIn.value)){
+				oIn.value=oIn.value.replace(/\s/g,"");
+			}
+			return true
+		}else{
+			alert('数据类型');
+			return false
+		}
+	}
+	/*function click(fn){
+		var data;
+		if(jy())
+		fn;
+	alert(data.length)
+		// alert(data.lensgth)
+		search1(data,oIn.value);
+		oIn.value='';
+	}*/
+	aBt[0].onclick=function(){
+		if(jy()){
+			data=[]
+			getData(root)
+			for(let i in data){
+				console.log(data[i].childNodes[0].nodeValue)
+			}
+			 search1(data,oIn.value)
+		}
+			
+	}
+	aBt[1].onclick=function(){
+		if(jy()){
+			data=[]
+			getData2(root)
+			for(let i in data){
+				console.log(data[i].childNodes[0].nodeValue+'后序')
+			}
+			search1(data,oIn.value)
+		}		
+	}
+
+})()
+</script>
+</body>
+</html>

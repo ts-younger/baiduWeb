@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务九：JavaScript和树（三）</title>
+<style>
+*{
+	font-size: 14pt;
+}
+div{
+	border: 2px solid rgb(10,0,0);
+	margin-top: 15px;
+	background: #fff;
+	color: #000;
+}
+.box_one{
+	width: 1200px;
+	margin: 0 auto;
+	border: none
+}
+.box_two{
+	width: 1200px;
+	margin-left: -7px;
+	display: inline-block;
+}
+.box_three{
+	width: 29%;
+	margin:10px 0;
+	display: inline-block;
+}
+.box_three div{
+	width: 24%;
+	margin:15px 0;
+	display: inline-block;
+	text-align: center;
+}
+input{
+	width: 200px;
+	height: 30px;
+}
+button{
+	width: 100px;
+	height: 30px;
+}
+.show{
+	background: rgb(200,0,0);
+	color: #fff;
+}
+</style>
+</head>
+<body>
+	<div class="box_one">
+		<div class='box_two'>nba
+			<div class='box_three'>勇士
+				<div>库里</div>
+				<div>格林</div>
+				<div>汤普森</div>
+			</div>
+			<div class='box_three'>火箭
+				<div>哈登</div>
+				<div>内内</div>
+				<div>戈登</div>
+			</div>
+			<div class='box_three'>马刺
+				<div>帕克</div>
+				<div>马努</div>
+				<div>卡哇伊</div>
+			</div>
+		</div>
+		<div class='box_two'>中国
+			<div class='box_three'>四川
+				<div>成都</div>
+				<div>绵阳</div>
+				<div>德阳</div>
+			</div>
+			<div class='box_three'>北京
+				<div>五道口</div>
+				<div>中南海</div>
+				<div>朝阳</div>
+			</div>
+			<div class='box_three'>上海
+				<div>崇明</div>
+				<div>徐家汇</div>
+				<div>杨浦</div>
+			</div>
+		</div>
+		<div class='box_two'>足球
+			<div class='box_three'>英超
+				<div>水晶宫</div>
+				<div>曼联</div>
+				<div>切尔西</div>
+			</div>
+			<div class='box_three'>德甲
+				<div>拜仁</div>
+				<div>霍村</div>
+				<div>狼堡</div>
+			</div>
+			<div class='box_three'>意甲
+				<div>国米</div>
+				<div>A米</div>
+				<div>尤文</div>
+			</div>
+		</div>
+		<div class='box_two'>景区
+			<div class='box_three'>西南
+				<div>九寨沟</div>
+				<div>峨眉山</div>
+				<div>新都桥</div>
+			</div>
+			<div class='box_three'>华北
+				<div>故宫</div>
+				<div>泰山</div>
+				<div>太行山</div>
+			</div>
+			<div class='box_three'>西北
+				<div>华山</div>
+				<div>帕克</div>
+				<div>秦皇陵</div>
+			</div>
+		</div>
+	</div>
+	<br>
+	<input id='search' type="text">
+	<button>前序搜索</button>
+	<button>后序搜索</button>
+	<button>删除</button>
+	<input id='iqs' type="text">
+	<button>添加</button>
+<script type="text/javascript">
+(function(){
+	var aDiv=document.querySelector('.box_three');
+	// alert(aDiv.children.length);
+	var data=[];
+	var str;
+	// var num=[];
+	var timer;
+	var root=document.querySelector('.box_one');
+	var oSea=document.querySelector('#search');
+	var oIqs=document.querySelector('#iqs');
+	var aBt=document.querySelectorAll('button');
+/*前序获取节点数据*/
+	function inOrderDate(root){
+		if(root!=null){
+			if(root.nodeName.toLowerCase()=='div')
+			data.push(root);
+		}
+		for(let i=0;i<root.children.length;i++){
+			inOrderDate(root.children[i]);
+		}
+	}
+	/*后序获取节点数据*/
+	function lastOrderData(root){
+		if(root!=null){
+			for(let i=0;i<root.children.length;i++){
+				lastOrderData(root.children[i])
+			}
+			if(root.nodeName.toLowerCase()=='div')
+			data.push(root)
+		}
+	}
+	/*验证输入是否合法*/
+	function jy(){
+		if(oSea.value && /[\w\u4e00-\u9fa5]+/.test(oSea.value)){
+			if(/\s/g.test(oSea.value)){
+				oSea.value=oSea.value.replace(/\s/g,"")
+			}
+			return true
+		}else{
+			return false;
+		}
+		
+	}
+	/*搜索*/
+	function sear(data,str){
+		clearInterval(timer);
+		var i=0;
+		var that;
+		timer=setInterval(function(){
+			
+			if(data[i-1] && data[i-1].style.backgroundColor=='purple'){
+				data[i-1].style.color='#000';
+				data[i-1].style.backgroundColor='#fff';
+			}
+			if(data[i]){
+				if(data[i].childNodes[0].nodeValue==str){
+					data[i].style.backgroundColor='rgb(100,0,0)';
+					data[i].style.color='#fff';
+				}else{
+					data[i].style.backgroundColor='purple';
+					data[i].style.color='#fff';
+				}	
+			}else{
+				clearInterval(timer)
+				return
+			}			
+			i++;	
+		},200)
+	}
+	/*重置样式*/
+	function recss(){
+		inOrderDate(root);
+		for(let i=0;i<data.length;i++){
+			data[i].style.backgroundColor='#fff';
+			data[i].style.color='#000';
+		}
+	}
+	/*重置class*/
+	function reclass(str){
+		inOrderDate(root);
+		for(let i=0;i<data.length;i++){
+			if(/show/.test(data[i].className)){
+				data[i].setAttribute('class',str)
+			}
+		}
+	}
+	/*删除*/
+	function del(){
+		inOrderDate(root);
+		for(let i=0;i<data.length;i++){
+			if(/show/.test(data[i].className)){
+				data[i].parentNode.removeChild(data[i]);
+			}
+		}
+	}
+	/*数据添加*/
+	function addEl(){
+		inOrderDate(root);
+		if(oIqs.value && /[\w\u4e00-\u9fa5]+/.test(oIqs.value)){
+			if(/\s/g.test(oIqs.value)){
+				oIqs.value=oIqs.value.replace(/\s/g,'')
+			}
+		}else{
+			alert('数据错误');
+			return
+		}
+		for(let i=0;i<data.length;i++){
+			if(/show/.test(data[i].className)){
+				if(data[i].children[0]){
+					var aClass=data[i].children[0].className;
+				}//获取子节点相应的class(如果有)
+				var oDiv=document.createElement('div');
+				var oText=document.createTextNode(oIqs.value);
+				oDiv.appendChild(oText);
+				oDiv.setAttribute('class',aClass);
+				data[i].appendChild(oDiv);
+
+			}
+		}
+	}
+
+	/*点击改变样式*/
+	root.onclick=function(ev){
+		reclass(str);
+		var ev=ev || window.event;
+		var target=ev.target || ev.srcElement;
+		ev.preventDefault();
+		if(target.nodeName.toLowerCase()=='div'){
+			str=target.getAttribute('class')
+			str=str?str:'';
+			target.setAttribute('class',str+' show')
+		}
+	}
+	aBt[0].onclick=function(){
+		if(jy()){
+			data=[];
+			inOrderDate(root);
+			sear(data,oSea.value)
+		}
+	}
+	aBt[1].onclick=function(){
+		if(jy()){
+			data=[];
+			lastOrderData(root);
+			sear(data,oSea.value)
+			oIqs.value=''
+		}
+	}
+	aBt[2].onclick=function(){
+		data=[];
+		del()
+	}
+	aBt[3].onclick=function(){
+		data=[];
+		addEl()
+	}
+})()
+</script>
+</body>
+</html>

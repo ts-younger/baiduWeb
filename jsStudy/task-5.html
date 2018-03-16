@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务五：基础JavaScript练习</title>
+<style>
+body{width: 800px;margin: 0 auto;text-align: center;}
+	input{width: 200px;height: 40px;}
+	button{width: 80px;height: 40px;margin-left: 10px;}
+	#cont{height: 200px; }
+	#cont li{width: 20px;background: red;display: inline-block;margin-right: 10px;vertical-align: bottom;}
+</style>
+</head>
+<body>
+	<input type="text" id='aqi'>
+	<button>添加左</button>
+	<button>添加右</button>
+	<button>删除左</button>
+	<button>删除右</button>
+	<button>排序</button>
+	<ul id='cont'>
+		
+	</ul>
+<script type="text/javascript">
+(function(){
+	var aBt=document.getElementsByTagName('button'),
+		oIn=document.getElementById('aqi'),
+		oUl=document.getElementById('cont');
+	var sx=true;
+	function jy(){
+		if(!/^\d+$/.test(oIn.value)){
+			alert('数据类型错误');
+			oIn.value='';
+			return false;
+		} 
+		if(oIn.value<10 || oIn.value>100){
+			alert('请输入10-100之间数字');
+			oIn.value='';
+			return false;
+		}
+		return true
+	}
+
+	function insert(side){
+		if(jy()){
+			var aLi=oUl.getElementsByTagName('li');
+			var oLi=document.createElement('li');
+			oLi.style.height=oIn.value*2+'px';
+			if(aLi.length==0){
+				oUl.appendChild(oLi);
+			}else if(aLi.length==60){
+				alert('数量已超')
+			}else{
+				if(side=='left'){
+					oUl.insertBefore(oLi,aLi[0]);
+				}else{
+					oUl.appendChild(oLi);
+				}
+			}
+			oIn.value='';
+		}	
+	}
+	function getstyle(obj,attr){
+		if(obj.currentStyle){
+			return obj.currentStyle[attr];
+		}else
+		return getComputedStyle(obj,false)[attr]
+	}
+	function docss(obj,attr,value){
+		if(arguments.length==2){
+			getstyle(obj,attr);
+		}else{
+			if(attr=='opacity'){
+				obj.style.opacity=value;
+			}else{
+				obj.style[attr]=value+'px';
+			}
+		}
+	}
+	function mr(){
+		var aLi=oUl.getElementsByTagName('li');
+		for(let i=0; i<aLi.length;i++){
+			var height=parseInt(getstyle(aLi[i],'height'));
+			docss(aLi[i],'margin-top',200-height);
+		}
+	}
+
+	function sort(sx){
+		var aLi=oUl.getElementsByTagName('li');
+		// if(aLi.length>1){
+		var n=aLi.length-1;
+		var ti=[];
+		while(n>0){
+			var pos=0;
+			if(sx){//判别排序方向
+				for(var j=0;j<n;j++)
+					if(parseInt(aLi[j].style.height)>parseInt(aLi[j+1].style.height)){
+						pos=j;
+						var temp=aLi[j].style.height;
+						aLi[j].style.height=aLi[j+1].style.height;
+						aLi[j+1].style.height=temp;
+					}
+			}else{
+				for(var j=0;j<n;j++)
+					if(parseInt(aLi[j].style.height)<parseInt(aLi[j+1].style.height)){
+						pos=j;
+						var temp=aLi[j].style.height;
+						aLi[j].style.height=aLi[j+1].style.height;
+						aLi[j+1].style.height=temp;
+					}
+			}	
+			n=pos;
+			ti.push(pos);
+		}
+		 mr();
+	}
+	var arr=[55,77,44,22,99,11,33];
+	console.log(sort(arr));
+
+	aBt[0].onclick=function(){
+		var side='left';
+		if(jy()){
+			 insert(side);
+			 mr();
+		}
+	}
+	aBt[1].onclick=function(){
+		var side='right';
+		if(jy()) insert(side);
+		 mr();
+	}
+	aBt[2].onclick=function(){
+		var side='left';
+		var aLi=oUl.getElementsByTagName('li');
+		if(aLi.length>0);
+		oUl.removeChild(aLi[0]);
+	}
+	aBt[3].onclick=function(){
+		var side='left';
+		var aLi=oUl.getElementsByTagName('li');
+		if(aLi.length>0)
+		oUl.removeChild(aLi[aLi.length-1]);
+	}
+	aBt[4].onclick=function(){
+		sx=!sx; 
+		sort(sx);
+	}
+})()
+</script>
+</body>
+</html>
