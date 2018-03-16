@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务三：表单（三）联动</title>
+<style>
+	select{
+		width: 80px;
+		height: 30px;
+	}
+	.hidden{
+		display: none;
+	}
+	.show{
+		display: block;
+	}
+</style>
+</head>
+<body>
+	<form action="" id="xl">
+		<select name="" id="xl_num1">
+			
+		</select>
+		<select name="" id="xl_num2">
+			
+		</select>
+		<select name="" id="xl_num3">
+			
+		</select>
+	</form>
+	<form action="" id="form2">
+		<input type="radio" name="sf" value="student" class='radio_stu' checked>在校生
+		<input type="radio" name="sf" value="nostudent" class='radio_stu'  >非在校生<br>
+		<div id='student' class='show'>
+			<label for="school">学校</label>
+			<select name="" id="city"></select>
+			<select name="" id="school"></select>
+		</div>
+		<div id='company' class='hidden'>
+			<label for="company">就业单位</label>	
+			<input type="text" name='company' id='company'>
+		</div>
+		
+	</form>
+<script type="text/javascript">
+(function(){
+	var addr={
+		"请选择":[],
+		"四川":{
+			"请选择":[],
+			"成都":[
+				"请选择","金牛区","龙泉","武侯"
+			],
+			"遂宁":[
+				"请选择","射洪","大英","蓬溪"
+			],
+			"南充":[
+				"请选择","西充","阆中","南部"
+			],
+			"乐山":[
+				"请选择","峨眉山","夹江","五通"
+			]
+		},
+		"美国":{
+			"请选择":[],
+			"加州":[
+				"请选择","洛杉矶","旧金山","圣迭戈"
+			],
+			"德州":[
+				"请选择","休斯顿","新奥尔良","圣安东尼奥"
+			],
+			"华盛顿":[
+				"请选择","西雅图","东雅图","南雅图"
+			],
+			"爱荷华":[
+				"请选择","拉斯维加斯","芝加哥","底特律"
+			]
+		},
+		"动物":{
+			"请选择":[],
+			"哺乳":[
+				"请选择","狗","猫","牛"
+			],
+			"爬行":[
+				"请选择","恐龙","蛇","蜥蜴"
+			],
+			"鱼":[
+				"请选择","鲨鱼","大马哈鱼","鲶鱼"
+			],
+			"鸟":[
+				"请选择","老鹰","孔雀","山雀"
+			]
+		}
+	}
+
+
+	
+	var aSe=document.querySelectorAll('select');
+	
+	for(let key in addr){
+		aSe[0].add(new Option(key));
+	}
+	aSe[0].onchange=function(){
+			var astr=aSe[0].value;
+			aSe[1].innerHTML='';
+			aSe[2].innerHTML='';
+			for(let j in addr[astr]){
+				aSe[1].add(new Option(j));
+			}		
+		}
+	aSe[1].onchange=function(){
+		var astr=aSe[0].value;
+		var bstr=aSe[1].value;
+		aSe[2].innerHTML='';
+		for(let i =0;i< addr[astr][bstr].length;i++){
+			aSe[2].add(new Option(addr[astr][bstr][i]))
+		}
+	}
+	//地域，学校信息json
+	var school={
+		"城市":["请选择","北京","上海","四川","江苏"],
+		"学校":["请选择",
+		["北京大学","清华大学","人民大学","北京航空航天大学"],
+		["复旦大学","上海交通大学","同济大学","华东师范大学"],
+		["四川大学","电子科技大学","西南财经大学","西南交通大学"],
+		["南京大学","东南大学","河海大学","南京航空航天大学"]
+		]
+	}
+	var oFo=document.querySelector('#form2')
+	var aIn=oFo.querySelectorAll('.radio_stu');
+	var oCon=oFo.querySelector('#company');
+	var oSt=oFo.querySelector('#student');
+	var ocity=oFo.querySelector('#city');
+	var osc=oFo.querySelector('#school');
+
+	//利用冒泡规则处理单选项点击问题
+	/*oFo.onclick=function(ev){
+		var ev=ev || window.event;
+		var target=ev.target || ev.srcElement;
+		if(target.nodeName.toLowerCase()=='input' && target.type=='radio'){
+			for(let i=0;i<aIn.length;i++){
+				if(aIn[i].checked==true){
+					if(aIn[i].value=='student'){
+						oCon.setAttribute('class','hidden');
+						oSt.setAttribute('class','show');
+						ocity.innerHTML='';
+						osc.innerHTML='';
+						init();
+					}else if(aIn[i].value=='nostudent'){
+						oSt.setAttribute('class','hidden');
+						oCon.setAttribute('class','show');
+					}
+				}
+			}
+		}
+	}*/
+	aIn[0].onclick=function(){
+		oSt.setAttribute('class','show');
+		oCon.setAttribute('class','hidden');
+		ocity.innerHTML='';
+		osc.innerHTML='';
+		init();
+	}
+	aIn[1].onclick=function(){
+		oCon.setAttribute('class','show');
+		oSt.setAttribute('class','hidden')
+	}
+	//第一选择项预加载
+	function init(){
+		for(let i in school['城市']){
+			ocity.add(new Option(school['城市'][i]));
+		}
+	}
+	init();
+	//第一选择项值改变函数
+	ocity.onchange=function(){
+		var i;
+		for(i=0;i<school['城市'].length;i++){
+			if(ocity.value==school['城市'][i]){
+				break;
+			}	
+		}
+		osc.innerHTML='';
+		for(let j=0;j< school['学校'][i].length;j++){
+			if(i==0){
+				osc.add(new Option(school['学校'][i]));
+				break;
+			}else{
+				osc.add(new Option(school['学校'][i][j]));
+			}
+		}
+	}
+})()
+</script>
+</body>
+</html>

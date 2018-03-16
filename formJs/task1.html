@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务一：表单（一）单个表单项的检验</title>
+<style>
+	#id{
+		width: 600px;
+		margin: 100px auto;
+		text-align: center;
+	}
+	div{
+		width: 500px;
+		overflow: hidden;
+		margin:10px 50px;
+	}
+	input,button{
+		height: 30px;
+		border-radius:5px; 
+	}
+	label{
+		font-family: 黑体;
+		font-size: ;
+		width:20%;
+		height: 30px;
+		display: inline-block;
+	}
+	input{
+		width:50%;
+
+	}
+	input:nth-child(even){
+
+	}
+	input:nth-child(odd){
+		width: 60px;
+		height: 30px;
+		background: blue;
+		border: none;
+		color: #fff;
+		font-family: 黑体;
+		font-size: 20px;
+	}
+	button{
+		width:15%;
+	}
+	p{
+		margin-left: 22%;
+		font-family: 微软雅黑;
+		font-size: 16px;
+	}
+	.hidden{
+		visibility: hidden;
+	}
+	.show{
+		visibility: visible;
+	}
+</style>
+</head>
+<body>
+	<form action="" id="zc">
+		<div class="username">
+			<label for="userName">用户名</label>
+			<input type="text" id='userName' name='userName'>
+			<input type='button' id='username_yz' value='验证' />
+			<p class='hidden'>必填，长度为4~16个字符</p>
+		</div>
+		<div class="name">
+			<label for="name">姓名</label>
+			<input type="text" id='name' name='name'>
+			<input type='button' id='name_yz' value='验证' />
+			<p class='hidden'>姓名不能为空</p>
+		</div>
+		<div class="company">
+			<label for="company">公司</label>
+			<input type="text" id='company' name='company'>
+			<input type='button' id='company_yz' value='验证' />
+			<p class='hidden'>名称格式正确</p>
+		</div>
+	</form>
+<script type="text/javascript">
+(function(){
+	/**/
+	var oUn=document.querySelector('.username')
+	 oNa=document.querySelector('.name'),
+	 oCm=document.querySelector('.company'),
+	 aIn=document.querySelectorAll('input');
+
+	 function length(str){
+	 	var len=0
+	 	for(let i=0;i<str.length;i++){
+	 		if(/[\u4e00-\u9fa5]/.test(str.charAt(i))){
+	 			len=len+2;
+	 		}else if(/[\x00-\xff]/.test(str.charAt(i))){
+	 			len++;
+	 		}
+	 	}
+	 	return len
+	 }
+	 // alert(length('nihao22//啊'))
+
+	 function getFocus(obj,color,str){
+	 	obj.onfocus=function(){
+	 		var op=obj.parentNode.querySelector('p');
+	 		if(color){
+	 			obj.style.border='1px solid '+color;
+	 		}
+	 		if(str){
+	 			op.innerText=str;
+	 		}
+	 		op.setAttribute('class','show');
+	 	}
+	 }
+	 function getblur(obj){
+	 	obj.onblur=function(){
+	 		if(obj.value==''){
+	 			var op=obj.parentNode.querySelector('p');
+	 			op.setAttribute('class','hidden')
+	 		}
+	 	}
+	 }
+	 for(let i=0;i<aIn.length;i++){
+	 	getFocus(aIn[i],'red')
+	 	getblur(aIn[i])
+
+	 }
+	 aIn[1].onclick=function(){
+	 		var reg=/[\w\u4e00-\u9fa5]+/;
+	 		data_yz(aIn[0],reg);
+	 	}
+	 aIn[3].onclick=function(){
+	 		var reg=/[\w\u4e00-\u9fa5]+/;
+	 		data_yz(aIn[2],reg);
+	 	}
+	 aIn[5].onclick=function(){
+	 		var reg=/[\w\u4e00-\u9fa5]+/;
+	 		data_yz(aIn[4],reg);
+	 	}
+
+	 function data_yz(obj,reg,str){
+	 	var op=obj.parentNode.querySelector('p');
+	 	var len=length(obj.value)
+	 	if(obj.value==''){
+	 		if(str){
+	 			op.innerText="输入不能为空";
+	 		}
+	 	}else if(!reg.test(obj.value)){
+	 		op.innerText='请注意数据类型';
+	 	}else if(len<4 || len>16){
+	 		op.innerText='长度在4-16位'
+	 	}else{
+	 		op.innerText='输入合法'
+	 	}
+	 }
+
+})()
+</script>
+</body>
+</html>

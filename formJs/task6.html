@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务六：UI组件之浮出层</title>
+<style>
+*{
+	margin: 0;
+	padding: 0;
+}
+	body{
+		width: 1200px;
+		height: 1000px;
+		text-align: center;
+	}
+	button{
+		width: 120px;
+		height: 30px;
+		display: inline-block;
+		margin-top: 400px;
+	}
+	.zz{
+		display: none;
+		position: absolute;
+		z-index: 2;
+		top: 0;
+		left: 0;
+		opacity: 0.5;
+		background: black
+	}
+	.tc{
+		/* width: 400px;
+		height: 300px; */
+		position: fixed;
+		z-index: 5;
+		top: 50%;
+		left: 50%;
+		background: #fff;
+		transform: translate(-50%, -50%);
+		/* margin-left:-200px;
+		margin-top: -150px; */
+		display: none;
+	}
+	.tc_top{
+		height: 60px;
+		background: #bbb;
+	}
+	h2{
+		line-height: 60px;
+	}
+	.tc_main{
+		padding: 20px 40px;
+	}
+	input{
+		width: 80px;
+		height: 30px;
+		display: inline-block;
+		margin-top: 80px;
+	}
+</style>
+</head>
+<body>
+	<button>弹出层</button>
+	<div class="zz"></div>
+	<div class="tc">
+		<div class="tc_top">
+			<h2>标题</h2>
+		</div>
+		<div class="tc_main">
+			<p>弹出层内容</p>
+			<input type="button" value='确定'>
+			<input type="button" value='取消'>
+		</div>
+	</div>
+<script type="text/javascript">
+(function(){
+var oBt=document.querySelector('button');
+var oZz=document.querySelector('.zz');
+var aIn=document.querySelectorAll('input');
+var oTc=document.querySelector('.tc');
+var oTt=document.querySelector('.tc_top');
+
+oBt.onclick=function(){
+	var ow=document.body.scrollWidth;
+	var oH=document.body.scrollHeight;
+	oZz.style.display='block';
+	oZz.style.width=ow+'px';
+	oZz.style.height=oH+'px';
+	oTc.style.display='block';
+	oTc.style.resize='both';
+	oTc,style.overflow='auto';
+}
+aIn[0].onclick=function(){
+	oZz.style.display='none';
+	oTc.style.display='none';
+}
+aIn[1].onclick=function(){
+	oZz.style.display='none';
+	oTc.style.display='none';
+}
+oZz.onclick=function(){
+	oZz.style.display='none';
+	oTc.style.display='none';
+}
+
+function drag(obj,ele){
+	var lastX=0;
+	var lastY=0;
+	obj.onmousedown=function(ev){
+		obj.style.cursor='move';
+		var ev=ev || event;
+		console.log(ele.offsetLeft+'左1')
+		var disX=ev.clientX-ele.offsetLeft;
+		var disY=ev.clientY-ele.offsetTop;
+
+		document.onmousemove=function(ev){
+			var ev=ev || event;
+			var lef=ev.clientX-disX;
+			var to=ev.clientY-disY;
+			console.log(disX);
+			console.log(lef);
+
+			ele.style.left=lef+'px';
+			ele.style.top=to+'px';
+			console.log(ele.offsetLeft+'左2')
+		}
+		document.onmouseup=function(){
+			obj.style.cursor='auto';
+			obj.onmousedown=null;
+			document.onmousemove=null;
+			document.onmouseup=null;
+			drag(oTt,oTc);
+		}
+	}
+}
+	
+	drag(oTt,oTc);
+	
+
+})()
+</script>
+</body>
+</html>

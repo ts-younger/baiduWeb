@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务五：听指令的小方块（二）</title>
+<style>
+body{
+	text-align: center;
+}
+p{
+	height: 20px;
+	margin-top: 10px;
+	font-size: 12px;
+}
+	.box{
+		width: 500px;
+		height: 550px;
+		margin: 0 auto;
+		background: 
+	}
+	.top{
+		margin-left: 40px;
+		width: 100%;
+		height: 30px;
+	}
+	.top li{
+		float: left;
+		width:40px ;
+		height:30px;
+		list-style-type: none;
+		text-align: center;
+	}
+	.tab_left{
+		width: 40px;
+		float: left;
+	}
+	.tab_left li{
+		width: 40px;
+		height: 40px;
+		list-style-type: none
+	}
+	#tab{
+		float:left;
+		margin-bottom: 20px;
+		position: relative;
+		width: 400px;
+		height: 400px;
+	}
+	table{
+		border: 2px solid black;
+		margin-bottom: 20px;
+		width:400px;
+		height:400px;
+	}
+	#pox{
+		width: 40px;
+		height: 40px;
+		background: red;
+		position: absolute;
+		top: 41px;
+		left: 120px
+	}
+	#pox div{
+		background: blue;
+		width: 40px;
+		height: 15px;
+	}
+
+	table td{
+		width: 40px;
+		height: 40px;
+		box-sizing:border-box;
+		border: 1px solid #ccc
+	}
+	input{
+		width: 120px;
+		height: 30px;
+		display: inline-block;
+	}
+	#button{
+		width: 60px;
+		height: 30px;
+		border-radius: 5px;
+	}
+	.tab_bot{
+		margin-left: 30px;
+		float: left;
+		clear: both
+	}
+
+</style>
+</head>
+<body>
+	<div class="box">
+		<ul class="top">
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+			<li>6</li>
+			<li>7</li>
+			<li>8</li>
+			<li>9</li>
+			<li>10</li>
+		</ul>
+		<ul class="tab_left">
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+			<li>6</li>
+			<li>7</li>
+			<li>8</li>
+			<li>9</li>
+			<li>10</li>
+		</ul>
+		<div id='tab'>
+			<table style="border-collapse:collapse;">
+				<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>	
+			</table>
+			<div id="pox">
+				<div></div>
+			</div>
+		</div>
+		
+		<div class='tab_bot'>
+			<input type="text" id='iqs'>
+			<input type="button" value='执行' id='button'>
+		</div>
+		
+	</div>
+	<p> TRA TOP：向上面移动一格，方向不变 ------   TRA LEF：向左侧移动一格，方向不变; </p>
+	<p>TRA RIG：向右侧移动一格，方向不变------    TRA BOT：向下面移动一格，方向不变</p>
+	<p>MOV LEF：方向转向屏幕左侧，并向屏幕左侧移动一格  ------ MOV TOP：方向转向屏幕上面，向屏幕上面移动一格</p>
+	<p>MOV RIG：方向转向屏幕右侧，向屏幕右侧移动一格 ------   MOV BOT：方向转向屏幕下面，向屏幕下面移动一格</p>
+	
+<script type="text/javascript">
+(function(){
+/*逻辑：1.判定蓝色方块指向
+	2.判定是否输入合法
+	3.转向
+	4.判定是否越界
+*/	
+
+	var oIn=document.querySelector('input');
+	var oDiv=document.querySelector('#pox');
+	var aDiv=oDiv.querySelectorAll('div');
+	var oBt=document.querySelector('#button');
+	var deg=0;
+	var inter=true;
+	var timer,dire;
+
+	//旋转
+	function rota(obj,dege){
+		obj.style.transform='rotate('+dege+'deg)';
+	}
+
+	//对运动各方向距离的限制
+	function go(obj){
+		switch(dire){
+			case 0:
+			if(obj.offsetTop-40<0 || obj.offsetTop>362){
+				alert('到顶了');
+			}else{
+				startMove(obj,'top',-40);
+			}
+			break;
+			case 1:
+			if(obj.offsetLeft<0 || obj.offsetLeft+40>362){
+				alert('到顶了');
+			}else{
+				startMove(obj,'left',40);
+			}
+			break;
+			case 2:
+			if(obj.offsetTop<0 || obj.offsetTop+40>362){
+				alert('到顶了');
+			}else{
+				startMove(obj,'top',40);
+			}
+			break;
+			case 3:
+			if(obj.offsetLeft-40<0 || obj.offsetLeft>362){
+				alert('到顶了');
+			}else{
+				startMove(obj,'left',-40);
+			}
+			break;
+		}
+	}
+
+	function getstyle(obj,attr){
+		if(obj.currentStyle){
+			return obj.currentStyle[attr];
+		}else{
+			return getComputedStyle(obj,false)[attr]
+		}
+	}
+
+	//简易运动框架
+	function startMove(obj,attr,target){
+		if(inter){
+			clearInterval(timer)
+		}else{
+			return ;
+		}//简易判定上次运动是否已经结束,如果未完成,返回
+		clearInterval(timer);
+		var icur=parseInt(getstyle(obj,attr))+target;
+		timer=setInterval(function(){
+			inter=false;
+			var icu=parseInt(getstyle(obj,attr));
+			if(icur==icu){
+				inter=true;
+				clearInterval(timer);
+			}else{
+				obj.style[attr]=icu+target/10+'px';
+			}
+		},30)
+	}
+	//对输入内容进行判断,并确定运动及旋转方向
+	function getValue(obj){
+		if(obj.value && obj.value!=''){
+			obj.value=obj.value.replace(/\s/g,'');
+			switch(obj.value.toLowerCase()){
+				case 'tralef':
+				dire=3;
+				break;
+				case 'tratop':
+				dire=0;
+				break;
+				case 'trarig':
+				dire=1;
+				break;
+				case 'trabot':
+				dire=2;
+				break;
+				case 'movlef':
+				if(dire!=3){
+					rota(oDiv,-90);
+				}
+				//判定是否需要再次进行旋转
+				dire=3;
+				break;
+				case 'movtop':
+				if(dire!=0){
+					rota(oDiv,0);
+				}
+				dire=0;
+				break;
+				case 'movrig':
+				if(dire!=1){
+					rota(oDiv,90);
+				}
+				dire=1;
+				break;
+				case 'movbot':
+				if(dire!=2){
+					rota(oDiv,180);
+				}
+				dire=2;
+				break;
+				default:
+				alert('输入错误')
+			}
+		}
+	}
+	oBt.onclick=function(){
+		getValue(oIn);
+		// alert(dire);
+		go(oDiv)
+	}
+})()
+</script>
+</body>
+</html>

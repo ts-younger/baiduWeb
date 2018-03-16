@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务二：表单（二）多个表单项的动态校验</title>
+<style>
+	body{
+		width: 600px;
+		margin: 0 auto;
+	}
+	h2{
+		margin: 40px auto;
+		text-align: center;
+	}
+	form{
+		text-align: center;
+	}
+	div{
+		margin: 10px 40px;
+		height: 50px
+	}
+	label{
+		width: 15%;
+		display: inline-block;
+		font-size: 16px;
+		font-family: 微软雅黑;
+	}
+	p{
+		margin-left: 17%;
+		font-size: 14px;
+		margin-bottom: 10px
+	}
+	#submit{
+		width: 100px;
+		height: 40px;
+		border-radius:5px;
+		font-size: 16px;
+		color: #fff;
+		background: rgb(200,0,0);
+		font-family: 黑体;
+	}
+</style>
+</head>
+<body>
+	<h2>表单获得焦点时，出线规则提示</h2>
+	<form action="a.php" Method="get">
+		<div>
+			<label for="username">名称</label>
+			<input type="text" id='username'>
+			<p></p>
+		</div>
+		<div>
+			<label for="psw">密码</label>
+			<input type="password" id='psw'>
+			<p></p>
+		</div>
+		<div>
+			<label for="psw_qr">密码确认</label>
+			<input type="password" id='psw_qr'>
+			<p></p>
+		</div>
+		<div>
+			<label for="email">邮箱</label>
+			<input type="email" id='email'>
+			<p></p>
+		</div>
+		<div>
+			<label for="tel">手机</label>
+			<input type="text" id='tel'>
+			<p></p>
+		</div>
+		<input type="submit" id='submit' value="提交">
+	</form>
+<script type="text/javascript">
+(function(){
+	/*验证reg及提示字符串JSON*/
+	var pStr={
+		"username":{
+			"reg":/^[\w\u4e00-\u9fa5\-]+$/,
+			"focus":"必填,长度为4-16个字符",
+			"blur_acc":"验证通过",
+			"blur_err":"验证失败,请重新填写"
+		},
+		"psw":{
+			"reg":/^(\w){4,16}$/,
+			"focus":"必填,密码长度为4-16个字符",
+			"blur_acc":"密码可用",
+			"blur_err":"验证失败,密码长度为4-16"
+		},
+		"psw_qr":{
+			"reg":/^(\w){4,16}$/,
+			"focus":"再次输入相同的密码",
+			"blur_acc":"密码输入一致",
+			"blur_err":"与上次密码不同,请重新填写"
+		},
+		"email":{
+			"reg":/^\w+@\w{2,6}(\.\w{2,4}){1,3}$/,
+			"focus":"必填,请按照email格式填写",
+			"blur_acc":"邮箱格式正确",
+			"blur_err":"邮箱格式错误"
+		},
+		"tel":{
+			"reg":/^1[3-9][0-9]{9}$/,
+			"focus":"必填,请按照手机格式填写",
+			"blur_acc":"手机格式正确",
+			"blur_err":"验证失败,请按照手机格式重新填写"
+		}
+	}
+	/*获取输入字符串的长度*/
+	function getLength(obj){
+		var len=0;
+		for(let i=0;i<obj.value.length;i++){
+			if(/[\u4e00-\u9fa5]/.test(obj.value.charAt(i))){
+				len=len+2;
+			}else{
+				len++;
+			}
+		}
+		return len;
+	}
+	// alert(getLength('nihaoa啊好'))
+	function getStr(obj,pro){
+		var id=obj.id;
+		return pStr[id][pro];
+	}
+	/*获取焦点改变样式*/
+	function getFocus(obj){
+		var str=getStr(obj,'focus');
+		var op=obj.parentNode.querySelector('p');
+		op.innerHTML=str;
+		op.style.color='black'
+	}
+	//通过验证后获取的提示信息
+	function acc_style(obj,op,str_acc){
+		op.innerText=str_acc;
+		op.style.color='green';
+		obj.style.borderColor='green';
+		obj.qr=true;
+	}
+	//未通过验证后获取的提示信息
+	function err_style(obj,op,str_err){
+		op.innerText=str_err;
+		op.style.color='red';
+		obj.style.borderColor='red';
+		obj.qr=false
+	}
+	/*失去焦点函数*/
+	function getBlur(obj){
+		var reg=getStr(obj,'reg');
+		var str_acc=getStr(obj,'blur_acc');
+		var str_err=getStr(obj,'blur_err');
+		var op=obj.parentNode.querySelector('p');
+		// console.log(op.nodeName)
+		if(obj.id=='psw_qr'){
+			var pw=document.querySelector('#psw');
+			if(pw.value!='' && pw.value==obj.value){
+				acc_style(obj,op,str_acc)
+			}else{
+				err_style(obj,op,str_err)
+			}
+		}else if(obj.id=='username'){
+			if(obj.value && 4<getLength(obj) && getLength(obj)<16 && reg.test(obj.value)){
+				acc_style(obj,op,str_acc)
+			}else{
+				err_style(obj,op,str_err)
+			}
+		}else if(obj.value && reg.test(obj.value)){
+			acc_style(obj,op,str_acc)
+		}else{
+			err_style(obj,op,str_err)
+		}	
+	}
+	var aIn=document.querySelectorAll('input');
+	for(let i=0;i<aIn.length-1;i++){
+		aIn[i].onfocus=function(){
+			getFocus(aIn[i]);
+		}
+		aIn[i].onblur=function(){
+			getBlur(aIn[i]);
+		}
+	}
+	var oBt=document.querySelector('#submit');
+	oBt.onclick=function(event){
+		var qr;
+		for(let i=0;i<aIn.length-1;i++){
+			if(aIn[i].qr==false){
+				qr=false;
+				event.preventDefault();
+				return false;
+			}
+		}
+		if(qr){
+			alert('提交成功');
+			return true
+		}
+	}
+})()
+</script>
+</body>
+</html>

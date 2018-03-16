@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务七：UI组件之排序表格</title>
+<style>
+*{
+	margin: 0;
+	padding: 0
+}
+#tab{
+	width: 500px;
+	border-collapse: collapse;
+	margin: 0 auto;
+}
+#tab td,#tab th{
+	width: 80px;
+	border: 1px solid #ccc;
+	height: 30px;
+	color: black;
+	text-align: center;
+}
+#tab th{
+	background: rgb(20,20,20);
+	color: #fff
+}
+</style>
+</head>
+<body>
+	<table id='tab'>
+		<thead>
+			<tr>
+				<th>姓名</th>
+				<th>语文</th>
+				<th>数学</th>
+				<th>英语</th>
+				<th>合计</th>
+			</tr>
+			<tbody>
+				
+			</tbody>
+		</thead>
+	</table>
+<script type="text/javascript">
+(function(){
+	var score={
+		"小明":{
+			"语文":80,
+			"数学":90,
+			"英语":70
+		},
+		"小雷":{
+			"语文":65,
+			"数学":60,
+			"英语":50
+		},
+		"小华":{
+			"语文":77,
+			"数学":94,
+			"英语":70
+		},
+		"小花":{
+			"语文":60,
+			"数学":54,
+			"英语":68
+		},
+		"小毅":{
+			"语文":87,
+			"数学":88,
+			"英语":76
+		},
+		"小七":{
+			"语文":91,
+			"数学":97,
+			"英语":89
+		},
+		"小南":{
+			"语文":72,
+			"数学":53,
+			"英语":66
+		},
+		"小熊":{
+			"语文":78,
+			"数学":74,
+			"英语":72
+		}
+	}
+
+	var oBo=document.querySelector('#tab').querySelector('tbody');
+	var Data=[];
+	//页面数据初始化，将合计栏计算后结果直接初始化,也可以不同步加载
+	function init(obj){
+		for(let key in score){
+			var totle=0;
+			var oTr=document.createElement('tr');
+			var oTd=document.createElement('td');
+			var oText=document.createTextNode(key);
+			oTd.appendChild(oText);
+			oTr.appendChild(oTd);
+
+			for(let i in score[key]){
+				totle+=score[key][i];
+				var oTd=document.createElement('td');
+				oText=document.createTextNode(score[key][i]);
+				oTd.appendChild(oText);
+				console.log(score[key][i]);
+				oTr.appendChild(oTd);
+			}
+			var ttd=document.createElement('td');
+			var ttext=document.createTextNode(totle);
+			ttd.appendChild(ttext);
+			oTr.appendChild(ttd);
+			obj.appendChild(oTr);
+		}
+	}
+	init(oBo);
+	//从页面获取数据存入data
+	function getData(obj){
+		Data=[];
+		var aTr=obj.querySelectorAll('tr');
+		for(let i=0;i<aTr.length;i++){
+			var trData=[];
+			var atd=aTr[i].querySelectorAll('td');
+			for(let j=0;j<atd.length;j++){
+				trData.push(atd[j]);
+			}
+			Data.push(trData);
+		}	
+	}
+
+	//将排序后的数据重新渲染
+	function render(data){
+		oBo.innerHTML='';
+		for(let i=0;i<data.length;i++){
+			var oTr=document.createElement('tr');
+			for(let j=0;j<data[i].length;j++){
+				var oTd=document.createElement('td');
+				var oText=document.createTextNode(data[i][j].innerText);
+				oTd.appendChild(oText);
+				oTr.appendChild(oTd);
+			}
+			oBo.appendChild(oTr);
+		}
+	}
+	var aTh=document.querySelectorAll('th');
+	//为页面添加点击事件(用获取数据另外渲染的方式,耗时0-3ms,缓存后速度较快)
+	for(let i=1;i<aTh.length;i++){
+		aTh[i].sx=true;
+		aTh[i].style.cursor='auto';
+		aTh[i].onclick=function(){
+			console.time('起始')
+			getData(oBo);
+			if(aTh[i].sx){
+				Data.sort(function(a,b){
+					return b[i].innerText-a[i].innerText;
+				})
+			}else{
+				Data.sort(function(a,b){
+					return a[i].innerText-b[i].innerText;
+				})
+			}
+			aTh[i].sx=!aTh[i].sx;
+			render(Data)
+			console.timeEnd('起始')
+		}	
+	}
+
+
+	//直接在页面用冒泡进行DOM修改,耗时 1.49e+12ms
+	/*for(let i=1;i<aTh.length;i++){
+		aTh[i].sx=true;
+		aTh[i].onclick=function(){
+			console.time('开始');
+			var atr=oBo.querySelectorAll('tr');
+			for(let j=0;j<atr.length;j++){
+				for(let n=0;n<atr.length-j-1;n++){
+					var atd=atr[n].querySelectorAll('td');
+					if(n+1<atr.length){
+						var btd=atr[n+1].querySelectorAll('td');
+					}
+					if(aTh[i].sx){
+						if(atd[i].innerText<btd[i].innerText){
+							var temp=atr[n].innerHTML;
+							atr[n].innerHTML=atr[n+1].innerHTML;
+							atr[n+1].innerHTML=temp;
+						}
+					}else{
+						if(atd[i].innerText>btd[i].innerText){
+							var temp=atr[n].innerHTML;
+							atr[n].innerHTML=atr[n+1].innerHTML;
+							atr[n+1].innerHTML=temp;
+						}
+					}
+				}	
+			}
+			aTh[i].sx=!aTh[i].sx;
+			console.timeEnd('jies')
+		}
+	}*/
+
+})()
+</script>
+</body>
+</html>

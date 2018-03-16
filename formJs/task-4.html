@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务四：听指令的小方块（一）</title>
+<style>
+	.box{
+		width: 700px;
+		height: 700px;
+		margin: 0 auto;
+		background: 
+	}
+	.top{
+		margin-left: 40px;
+		width: 100%;
+		height: 30px;
+	}
+	.top li{
+		float: left;
+		width:40px ;
+		height:30px;
+		list-style-type: none;
+		text-align: center;
+	}
+	.tab_left{
+		width: 40px;
+		float: left;
+	}
+	.tab_left li{
+		width: 40px;
+		height: 40px;
+		list-style-type: none
+	}
+	#tab{
+		float:left;
+		margin-bottom: 20px;
+		position: relative;
+		width: 400px;
+		height: 400px;
+	}
+	table{
+		border: 2px solid black;
+		margin-bottom: 20px;
+		width:400px;
+		height:400px;
+	}
+	#pox{
+		width: 40px;
+		height: 40px;
+		background: red;
+		position: absolute;
+		top: 41px;
+		left: 120px
+	}
+	#pox div{
+		background: blue;
+		width: 40px;
+		height: 15px;
+	}
+
+	table td{
+		width: 40px;
+		height: 40px;
+		box-sizing:border-box;
+		border: 1px solid #ccc
+	}
+	input{
+		width: 120px;
+		height: 30px;
+		display: inline-block;
+	}
+	#button{
+		width: 60px;
+		height: 30px;
+		border-radius: 5px;
+	}
+	.tab_bot{
+		margin-left: 150px;
+	}
+
+</style>
+</head>
+<body>
+	<div class="box">
+		<ul class="top">
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+			<li>6</li>
+			<li>7</li>
+			<li>8</li>
+			<li>9</li>
+			<li>10</li>
+		</ul>
+		<ul class="tab_left">
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+			<li>6</li>
+			<li>7</li>
+			<li>8</li>
+			<li>9</li>
+			<li>10</li>
+		</ul>
+		<div id='tab'>
+			<table style="border-collapse:collapse;">
+				<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>	
+			</table>
+			<div id="pox">
+				<div></div>
+			</div>
+		</div>
+		
+		<div class='tab_bot'>
+			<input type="button" value='left' >
+			<input type="button" value='right'>
+			<input type="button" value='back'>
+			<input type="button" value='go'>
+		</div>
+	</div>
+<script type="text/javascript">
+(function(){
+/*逻辑：1.判定蓝色方块指向
+	2.判定是否输入合法
+	3.转向
+	4.判定是否越界
+*/	
+
+	var aIn=document.querySelectorAll('input');
+	var oDiv=document.querySelector('#pox');
+	var aDiv=oDiv.querySelectorAll('div');
+	var deg=0;
+
+	function rota(obj,dege){
+		obj.style.transform='rotate('+(dege%360)+'deg)';
+	}
+	function go(){
+		var dire=(deg/90)%4;
+		// alert(dire)
+		switch(dire){
+			case 0:
+			if(oDiv.offsetTop-40<0 || oDiv.offsetTop>362){
+				alert('到顶了');
+			}else{
+				oDiv.style.top=oDiv.offsetTop-40+'px';
+			}
+			break;
+			case 1:
+			if(oDiv.offsetLeft<0 || oDiv.offsetLeft+40>362){
+				alert('到顶了');
+			}else{
+				oDiv.style.left=oDiv.offsetLeft+40+'px';
+			}
+			break;
+			case 2:
+			if(oDiv.offsetTop<0 || oDiv.offsetTop+40>362){
+				alert('到顶了');
+			}else{
+				oDiv.style.top=oDiv.offsetTop+40+'px';
+			}
+			break;
+			case 3:
+			if(oDiv.offsetLeft-40<0 || oDiv.offsetLeft>362){
+				alert('到顶了');
+			}else{
+				oDiv.style.left=oDiv.offsetLeft-40+'px';
+			}
+			break;
+		}
+	}
+	aIn[0].onclick=function(){
+		deg+=270;
+		rota(oDiv,deg);
+	}
+	aIn[1].onclick=function(){
+		deg+=90;
+		rota(oDiv,deg);
+	}
+	aIn[2].onclick=function(){
+		deg+=180;
+		rota(oDiv,deg);
+	}
+	aIn[3].onclick=function(){
+		go(oDiv);
+	}
+
+})()
+</script>
+</body>
+</html>

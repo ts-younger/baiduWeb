@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>task2</title>
+    <style>
+        *{
+            margin: 0;
+            padding:0;
+            outline: none;
+        }
+        div{
+            font-size: 0;
+            width: 450px;
+            margin: 10px auto;
+            text-align: right;
+        }
+        div p{
+            text-align: left;
+            margin-left: 100px;
+            margin-bottom: 20px;
+            font-size: 12px;
+            color: #999;
+        }
+        .lab{
+            font-size: 16px;
+            text-align: right;
+            padding-right: 20px;
+        }
+        input{
+            width: 350px;
+            height: 24px;
+            border: 1px solid #bbb;
+            border-radius: 5px;
+        }
+        #btn{
+            width: 80px;
+            height: 30px;
+            border: none;
+            color: #fff;
+            background-color: #286090;
+        }
+    </style>
+</head>
+<body>
+<form action="a.php" method="get">
+    <div>
+        <label class="lab">名称</label>
+        <input type="text" name="name" placeholder="" id="val"/>
+    </div>
+    <div>
+        <label class="lab">密码</label>
+        <input type="password" name="password1" placeholder="" id="pas1"/>
+    </div>
+    <div>
+        <label class="lab">确认密码</label>
+        <input type="password" name="password2" placeholder="" id="pas2"/>
+    </div>
+    <div>
+        <label class="lab">邮箱</label>
+        <input type="email" name="email" placeholder="" id="mail"/>
+    </div>
+    <div>
+        <label class="lab">手机</label>
+        <input type="number" name="phone" placeholder="" id="tel"/>
+    </div>
+    <div>
+        <input type="submit" value="提交" id="btn"/>
+    </div>
+
+</form>
+<script>
+    var input=document.getElementsByTagName("input");
+    var val=document.getElementById("val");
+    var pas1=document.getElementById("pas1");
+    var pas2=document.getElementById("pas2");
+    var mail=document.getElementById("mail");
+    var tel=document.getElementById("tel");
+    var btn=document.getElementById("btn");
+    var arr=Array.prototype.slice.call(input);
+    var result=[];
+    arr.forEach(function (e) {
+        e.onfocus=function () {
+            var child=this.parentNode.lastElementChild;
+            if(child.tagName.toLowerCase()==="p"){
+                this.parentNode.removeChild(child);
+            }
+            var p=document.createElement("p");
+            var ids=this.id;
+            switch (ids){
+                case "val":
+                    p.innerText="必填，长度为4~16个字符";
+                    break;
+                case "pas1":
+                    p.innerText="必填，请输入密码";
+                    break;
+                case "pas2":
+                    p.innerText="必填，请输入相同密码";
+                    break;
+                case "mail":
+                    p.innerText="请输入正确邮箱地址";
+                    break;
+                case "tel":
+                    p.innerText="请输入手机号码";
+                    break;
+            }
+            this.parentNode.appendChild(p);
+        };
+        e.onblur=function () {
+            var str=this.value;
+            var ids=this.id;
+            var re=/[^A-z0-9\u4E00-\u9FA5]/g;
+            var rep=/[A-z0-9]/g;
+            var val=str.replace(/[^x00-xff]/g,'AB');
+            var element=this.parentNode.lastElementChild;
+            var child=this.parentNode.firstElementChild;
+            //判断输入字符不能为空
+            if(str==null||str==''){
+                switch (ids){
+                    case "val":
+                    case "pas1":
+                    case "pas2":
+                    case "mail":
+                    case "tel":
+                        element.innerText=child.innerText+"不能为空";
+                        break;
+                }
+                element.style.color="red";
+                this.style.borderColor="red";
+            } else {//按要求的格式输入字符
+                switch (ids){
+                    case "val":
+                        if(re.test(str)||(val.length<4||val.length>16)) {
+                            element.innerText = "名字格式错误";
+                            element.style.color = "red";
+                            this.style.borderColor = "red";
+                        } else {
+                            element.innerText = "名字格式正确";
+                            element.style.color = "green";
+                            this.style.borderColor = "green";
+                            result.push(true);
+                        }
+                        break;
+                    case "pas1":
+                        if(str.length>=6&&str.length<=12&&rep.test(str)){
+                            element.innerText="密码可用";
+                            element.style.color = "green";
+                            this.style.borderColor = "green";
+                        }else{
+                            element.innerText="密码不可用";
+                            element.style.color = "red";
+                            this.style.borderColor = "red";
+                        }
+                        break;
+                    case "pas2":
+                        if(str===pas1.value){
+                            element.innerText="密码已经确认";
+                            element.style.color = "green";
+                            this.style.borderColor = "green";
+                        }else{
+                            element.innerText="密码不一致";
+                            element.style.color = "red";
+                            this.style.borderColor = "red";
+                        }
+                        break;
+                    case "mail":
+                        var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+                        if(reg.test(str)){
+                            element.innerText="邮箱地址正确";
+                            element.style.color = "green";
+                            this.style.borderColor = "green";
+                        }else{
+                            element.style.color = "red";
+                            this.style.borderColor = "red";
+                        }
+                        break;
+                    case "tel":
+                        if(isNaN(str)){
+                            element.innerText="手机格式错误";
+                            element.style.color = "red";
+                            this.style.borderColor = "red";
+                        }else{
+                            element.innerText="手机格式正确";
+                            element.style.color = "green";
+                            this.style.borderColor = "green";
+                        }
+                        break;
+                }
+            }
+        }
+    });
+    btn.onclick=function (event) {
+        var result=1;
+        arr.forEach(function (e) {
+            if(e.style.borderColor=="green"){
+               result+=1;
+            }else {
+                e.onfocus();
+                e.onblur();
+                event.preventDefault();
+            }
+        });
+        if(result==arr.length){
+            alert("提交成功");
+            return true;
+        }else {
+            alert("输入不正确")
+        }
+    };
+</script>
+</body>
+</html>

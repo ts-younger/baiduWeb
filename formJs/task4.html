@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务四：听指令的小方块（一）</title>
+<style>
+	.box{
+		width: 700px;
+		height: 700px;
+		margin: 0 auto;
+		background: 
+	}
+	.top{
+		margin-left: 60px;
+	}
+	.top li{
+		float: left;
+		width:60px ;
+		height:30px;
+		list-style-type: none
+	}
+	.tab_left{
+		width: 40px;
+		float: left;
+	}
+	.tab_left li{
+		width: 40px;
+		height: 60px;
+		list-style-type: none
+	}
+	#tab{
+		float: left;
+		margin-bottom: 20px;
+		position: relative;
+		width: 600px;
+		height: 600px;
+	}
+	table{
+		border: 2px solid black;
+		margin-bottom: 20px;
+		width: 600px;
+		height: 600px;
+	}
+	#pox{
+		width: 60px;
+		height: 60px;
+		background: red;
+		position: absolute;
+		top: 61px;
+		left: 120px
+	}
+	#pox div{
+		background: blue;
+	}
+	#top{
+		width: 60px;
+		height: 20px;
+	}
+	#left{
+		width: 20px;
+		height: 60px;
+		position: absolute;
+		left: 0;
+	}
+	#right{
+		width: 20px;
+		height: 60px;
+		position: absolute;
+		right: 0;
+	}
+	#bottom{
+		width: 60px;
+		height: 20px;
+		position: absolute;
+		bottom: 0px;
+	}
+	.hidden{
+		display: none
+	}
+	.show{
+		display: block
+	}
+	table td{
+		width: 60px;
+		height: 60px;
+		box-sizing:border-box;
+		border: 1px solid #ccc
+	}
+	input{
+		width: 200px;
+		height: 30px;
+		display: inline-block;
+	}
+	#button{
+		width: 60px;
+		height: 30px;
+		border-radius: 5px;
+	}
+	.tab_bot{
+		margin-left: 150px;
+	}
+
+</style>
+</head>
+<body>
+	<div class="box">
+		<ul class="top">
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+			<li>6</li>
+			<li>7</li>
+			<li>8</li>
+			<li>9</li>
+			<li>10</li>
+		</ul>
+		<ul class="tab_left">
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+			<li>6</li>
+			<li>7</li>
+			<li>8</li>
+			<li>9</li>
+			<li>10</li>
+		</ul>
+		<div id='tab'>
+			<table style="border-collapse:collapse;">
+				<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>	
+			</table>
+			<div id="pox">
+				<div id='top' class='show'></div>
+				<div id='left' class="hidden"></div>
+				<div id='bottom' class="hidden"></div>
+				<div id='right' class="hidden"></div>
+			</div>
+		</div>
+		
+		<div class='tab_bot'>
+			<input type="text" id='iqs'>
+			<input type="button" value='执行' id='button'>
+		</div>
+	</div>
+<script type="text/javascript">
+(function(){
+/*逻辑：1.判定蓝色方块指向
+	2.判定是否输入合法
+	3.转向
+	4.判定是否越界
+*/	
+	var oIn=document.querySelector('#iqs');
+	var oBt=document.querySelector('#button');
+	var oDiv=document.querySelector('#pox');
+	var oShow=document.querySelector('.show');
+	var aDiv=oDiv.querySelectorAll('div');
+	var key;
+/*	oDiv.style.left='180px'
+	alert(oDiv.offsetLeft)*/
+	// alert(0%4);
+	// alert(1===true)
+	function getKey(){
+		var obj=getShow();
+		switch(obj.id){
+			case 'top':
+			key=0;
+			break;
+			case 'left':
+			key=1;
+			break;
+			case 'bottom':
+			key=2;
+			break;
+			case 'right':
+			key=3;
+			break;	
+		}
+	}
+	function getTurn(obj){
+		if(obj.value){
+			switch(obj.value.toLowerCase())
+			{
+				case 'turn left':
+				key=key+1;
+				break;
+				case 'turn back':
+				key=key+2;
+				break;
+				case 'turn right':
+				key=key+3;
+				break;
+				case 'go':
+				key=true;
+				break;
+				default:
+				key=null;
+				alert('请重新输入');
+				return false;
+			}
+		}
+	}
+	function getShow(){
+		for(let i in aDiv){
+			if(aDiv[i].className=='show'){
+				return aDiv[i];
+			}
+		}
+	}
+	
+	function goturn(){
+		if(key===true){
+			go();
+		}else{
+			var obj=getShow(aDiv);
+			obj.setAttribute('class','hidden');
+			var dir=key%4;
+			switch(dir){
+				case 0:	
+				aDiv[0].setAttribute('class','show');
+				break;
+				case 1:
+				aDiv[1].setAttribute('class','show');
+				break;
+				case 2:
+				aDiv[2].setAttribute('class','show');
+				break;
+				case 3:
+				aDiv[3].setAttribute('class','show');
+				break;
+			}
+		}
+	}
+	function go(){
+		var obj=getShow();
+		switch(obj.id){
+			case 'top':
+			if(0>oDiv.offsetTop-60 || oDiv.offsetTop>545){
+				alert('到边了');
+			}else{
+				oDiv.style.top=oDiv.offsetTop-60+'px';
+			};
+			break;
+			case 'left':
+			if(0>oDiv.offsetLeft-60 || oDiv.offsetLeft>540){
+				alert('到边了');
+			}else{
+				oDiv.style.left=oDiv.offsetLeft-60+'px';
+			};
+			break;
+			case 'bottom':
+			if(0>oDiv.offsetTop || oDiv.offsetTop+60>545){
+				alert('到边了');
+			}else{
+				oDiv.style.top=oDiv.offsetTop+60+'px';
+			};
+			break;
+			case 'right':
+			if(0>oDiv.offsetLeft || oDiv.offsetLeft+60>545){
+				alert('到边了');
+			}else{
+				oDiv.style.left=oDiv.offsetLeft+60+'px';
+			};
+			break;
+		}
+	}
+	oBt.onclick=function(){
+		getKey();
+		getTurn(oIn);
+		goturn();
+		oIn.value='';
+	}
+
+})()
+</script>
+</body>
+</html>
